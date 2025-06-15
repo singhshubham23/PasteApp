@@ -15,6 +15,12 @@ const Paste = () => {
       paste.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  function handleShare(pasteId) {
+  const shareableLink = `${window.location.origin}/pastes/${pasteId}`;
+  navigator.clipboard.writeText(shareableLink);
+  toast.success("Shareable link copied!");
+}
+
   function copyNote(content) {
     navigator.clipboard.writeText(content);
     toast.success("Copied to clipboard");
@@ -40,8 +46,12 @@ const Paste = () => {
             key={paste._id || `${paste.title}-${index}`}
             className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 rounded-lg shadow-md flex flex-col justify-between"
           >
-            <h3 className="font-semibold text-lg truncate mb-2">{paste.title}</h3>
-            <p className="text-sm break-words line-clamp-5 mb-4">{paste.content}</p>
+            <h3 className="font-semibold text-lg truncate mb-2">
+              {paste.title}
+            </h3>
+            <p className="text-sm break-words line-clamp-5 mb-4">
+              {paste.content}
+            </p>
             <div className="flex flex-wrap gap-2 text-xs">
               <Link
                 to={`/?pasteId=${paste._id}`}
@@ -62,6 +72,7 @@ const Paste = () => {
                 Delete
               </button>
               <button
+                onClick={() => handleShare(paste._id)}
                 className="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded"
               >
                 Share
